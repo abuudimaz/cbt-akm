@@ -24,6 +24,9 @@ const ExamScreen: React.FC<ExamScreenProps> = ({ user, exam, onFinish }) => {
   const [showSaveConfirmation, setShowSaveConfirmation] = useState(false);
   const saveTimeoutRef = useRef<number | null>(null);
 
+  // State for security features (fullscreen and visibility)
+  const [isWarningModalOpen, setIsWarningModalOpen] = useState(false);
+
   const currentQuestion = exam.questions[currentQuestionIndex];
   const storageKey = `cbt-progress-${user.username}-${exam.id}`;
 
@@ -34,6 +37,39 @@ const ExamScreen: React.FC<ExamScreenProps> = ({ user, exam, onFinish }) => {
     });
     setAnswers(initialAnswers);
   }, [exam.questions]);
+
+  const enterFullscreen = useCallback(() => {
+    document.documentElement.requestFullscreen().catch(err => {
+      console.error(`Error attempting to enable full-screen mode: ${err.message} (${err.name})`);
+    });
+  }, []);
+
+  // Effect to handle fullscreen and visibility changes
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      if (!document.fullscreenElement) {
+        setIsWarningModalOpen(true);
+      }
+    };
+
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        setIsWarningModalOpen(true);
+      }
+    };
+
+    // Attempt to enter fullscreen when the component mounts
+    enterFullscreen();
+
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    return () => {
+      document.removeEventListener('fullscreenchange', handleFullscreenChange);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, [enterFullscreen]);
+
 
   // Effect to check for saved progress on initial load
   useEffect(() => {
@@ -254,6 +290,38 @@ const ExamScreen: React.FC<ExamScreenProps> = ({ user, exam, onFinish }) => {
           </button>
         </div>
       </Modal>
+
+      {/* Warning Modal for Fullscreen/Visibility */}
+      <Modal
+        isOpen={isWarningModalOpen}
+        onClose={() => {
+            setIsWarningModalOpen(false);
+            enterFullscreen();
+        }}
+        title="Peringatan"
+      >
+        <div className="text-center">
+            <i className="fas fa-exclamation-triangle text-5xl text-yellow-500 mb-4"></i>
+            <p className="text-black mb-4">
+                Anda telah keluar dari mode layar penuh atau beralih tab. Tindakan ini tidak diizinkan selama ujian.
+            </p>
+            <p className="text-sm text-black">
+                Pelanggaran berulang dapat menyebabkan ujian Anda dihentikan.
+            </p>
+        </div>
+        <div className="flex justify-center mt-6">
+            <button
+                onClick={() => {
+                    setIsWarningModalOpen(false);
+                    enterFullscreen();
+                }}
+                className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+            >
+                Kembali ke Ujian
+            </button>
+        </div>
+      </Modal>
+
     </div>
   );
 };
