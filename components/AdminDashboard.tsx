@@ -120,7 +120,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ admin, onLogout }) => {
                 <>
                     <div className="p-6 text-center border-b border-gray-700">
                         <h2 className="text-2xl font-bold">CBT ADMIN</h2>
-                        <p className="text-sm text-gray-400">MIN SINGKAWANG</p>
+                        <p className="text-sm text-gray-200">MIN SINGKAWANG</p>
                     </div>
                     <nav className="flex-grow mt-4">
                        <NavLink targetView="home" icon="fa-home" text="Dashboard" />

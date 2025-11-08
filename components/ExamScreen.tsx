@@ -136,7 +136,7 @@ const ExamScreen: React.FC<ExamScreenProps> = ({ user, exam, onFinish }) => {
       <header className="flex justify-between items-center p-4 bg-white shadow-md flex-shrink-0">
         <div>
           <h1 className="text-xl font-bold text-black">{exam.title}</h1>
-          <p className="text-sm text-gray-600">Peserta: {user.name} ({user.username})</p>
+          <p className="text-sm text-black">Peserta: {user.name} ({user.username})</p>
         </div>
         <div className="flex items-center gap-4">
           <div className="h-6">

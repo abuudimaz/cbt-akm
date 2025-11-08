@@ -13,17 +13,17 @@ const DashboardHome: React.FC = () => {
                     <div className="bg-blue-100 p-4 rounded-lg text-center">
                         <i className="fas fa-database text-4xl text-blue-600 mb-2"></i>
                         <h3 className="font-bold text-lg text-black">Kelola Soal</h3>
-                        <p className="text-sm text-gray-700">Tambah, edit, dan hapus soal dari bank soal.</p>
+                        <p className="text-sm text-black">Tambah, edit, dan hapus soal dari bank soal.</p>
                     </div>
                     <div className="bg-green-100 p-4 rounded-lg text-center">
                         <i className="fas fa-users text-4xl text-green-600 mb-2"></i>
                         <h3 className="font-bold text-lg text-black">Kelola Siswa</h3>
-                        <p className="text-sm text-gray-700">Tambah, edit, dan hapus data siswa.</p>
+                        <p className="text-sm text-black">Tambah, edit, dan hapus data siswa.</p>
                     </div>
                     <div className="bg-yellow-100 p-4 rounded-lg text-center">
                         <i className="fas fa-calendar-alt text-4xl text-yellow-600 mb-2"></i>
                         <h3 className="font-bold text-lg text-black">Kelola Ujian</h3>
-                        <p className="text-sm text-gray-700">Atur jadwal dan konfigurasi ujian.</p>
+                        <p className="text-sm text-black">Atur jadwal dan konfigurasi ujian.</p>
                     </div>
                 </div>
             </div>
