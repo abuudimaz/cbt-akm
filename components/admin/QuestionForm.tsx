@@ -100,7 +100,8 @@ const QuestionForm: React.FC<QuestionFormProps> = ({ initialData, onSubmit, onCa
     };
 
     const renderOptions = () => {
-        const q = question as SingleChoiceQuestion | MultipleChoiceQuestion;
+// Fix: Removed incorrect type assertion that was causing errors. The `question` state is `any`, so we can access properties directly.
+        const q = question;
         return (
             <div>
                 <label className="block text-sm font-medium text-black">Pilihan Jawaban</label>
@@ -126,7 +127,8 @@ const QuestionForm: React.FC<QuestionFormProps> = ({ initialData, onSubmit, onCa
     };
 
     const renderMatchingFields = () => {
-        const q = question as MatchingQuestion;
+// Fix: Removed incorrect type assertion that was causing errors. The `question` state is `any`, so we can access properties directly.
+        const q = question;
         return (
             <div className="grid grid-cols-2 gap-4">
                 <div>
@@ -171,7 +173,8 @@ const QuestionForm: React.FC<QuestionFormProps> = ({ initialData, onSubmit, onCa
     };
 
     const renderShortAnswerFields = () => {
-        const q = question as ShortAnswerQuestion;
+// Fix: Removed incorrect type assertion that was causing errors. The `question` state is `any`, so we can access properties directly.
+        const q = question;
         return (
             <div>
                 <label className="block text-sm font-medium text-black">Kunci Jawaban</label>
