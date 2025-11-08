@@ -28,7 +28,7 @@ const ExamHeader: React.FC<{ user: User; title: string; saveStatus: SaveStatus }
             </div>
         </div>
         <div className="flex items-center space-x-4">
-             <div className="flex items-center text-sm transition-opacity duration-500" style={{ opacity: saveStatus !== 'idle' ? 1 : 0 }}>
+             <div className="flex items-center text-sm text-white transition-opacity duration-500" style={{ opacity: saveStatus !== 'idle' ? 1 : 0 }}>
                 {saveStatus === 'saving' && (
                     <>
                         <i className="fas fa-spinner fa-spin mr-2"></i>
@@ -37,8 +37,8 @@ const ExamHeader: React.FC<{ user: User; title: string; saveStatus: SaveStatus }
                 )}
                 {saveStatus === 'saved' && (
                     <>
-                        <i className="fas fa-check-circle mr-2 text-white"></i>
-                        <span className="text-white">Saved successfully</span>
+                        <i className="fas fa-check-circle mr-2"></i>
+                        <span>Saved successfully</span>
                     </>
                 )}
             </div>

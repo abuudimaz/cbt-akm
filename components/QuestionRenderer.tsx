@@ -28,7 +28,7 @@ const QuestionText: React.FC<{ text: string; number: number }> = ({ text, number
 const renderSingleChoice = (question: SingleChoiceQuestion, userAnswer: Answer, onAnswerChange: Function) => (
   <div className="space-y-3">
     {question.options.map((option, index) => (
-      <label key={option.id} className="flex items-center p-4 border border-blue-200 rounded-lg cursor-pointer transition-colors hover:bg-blue-50 focus-within:ring-2 focus-within:ring-blue-500">
+      <label key={option.id} className="flex items-center p-4 border border-blue-300 rounded-lg cursor-pointer transition-colors hover:bg-blue-50 focus-within:ring-2 focus-within:ring-blue-500">
         <input
           type="radio"
           name={question.id}
@@ -55,7 +55,7 @@ const renderMultipleChoice = (question: MultipleChoiceQuestion, userAnswer: Answ
     return (
         <div className="space-y-3">
         {question.options.map((option, index) => (
-            <label key={option.id} className="flex items-center p-4 border border-blue-200 rounded-lg cursor-pointer transition-colors hover:bg-blue-50 focus-within:ring-2 focus-within:ring-blue-500">
+            <label key={option.id} className="flex items-center p-4 border border-blue-300 rounded-lg cursor-pointer transition-colors hover:bg-blue-50 focus-within:ring-2 focus-within:ring-blue-500">
                 <input
                     type="checkbox"
                     value={option.id}

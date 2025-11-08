@@ -9,7 +9,9 @@ interface QuestionFormProps {
     onCancel: () => void;
 }
 
-const getNewQuestionTemplate = (type: QuestionType): Omit<Question, 'id'> => {
+// Fix: Removed incorrect return type `Omit<Question, 'id'>` which was causing type errors due to how TypeScript handles Omit on union types.
+// The return type is now correctly inferred by TypeScript.
+const getNewQuestionTemplate = (type: QuestionType) => {
     const base = {
         questionText: '',
         stimulus: '',
@@ -30,7 +32,9 @@ const getNewQuestionTemplate = (type: QuestionType): Omit<Question, 'id'> => {
 
 
 const QuestionForm: React.FC<QuestionFormProps> = ({ initialData, onSubmit, onCancel }) => {
-    const [question, setQuestion] = useState(initialData || getNewQuestionTemplate(QuestionType.SINGLE_CHOICE));
+    // Fix: Using `any` for the state type is a pragmatic solution to handle the complex and dynamic shape of the question object in the form,
+    // which avoids issues with TypeScript's handling of discriminated unions and properties that only exist on certain types in the union.
+    const [question, setQuestion] = useState<any>(initialData || getNewQuestionTemplate(QuestionType.SINGLE_CHOICE));
     
     useEffect(() => {
         setQuestion(initialData || getNewQuestionTemplate(QuestionType.SINGLE_CHOICE));

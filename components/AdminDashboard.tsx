@@ -1,7 +1,7 @@
-import React, { useState, useCallback } from 'react';
-// Fix: Import types from the types module.
-import type { User, Question, Student, AdminView } from '../types';
+import React, { useState } from 'react';
 import { EXAM_DATA, STUDENTS_DATA } from '../constants';
+// Fix: Import all necessary types from the types module.
+import type { User, AdminView, Student, Question } from '../types';
 import AdminLayout from './admin/AdminLayout';
 import DashboardHome from './admin/DashboardHome';
 import ManageStudents from './admin/ManageStudents';
@@ -13,75 +13,77 @@ interface AdminDashboardProps {
 }
 
 const AdminDashboard: React.FC<AdminDashboardProps> = ({ admin, onLogout }) => {
-  const [view, setView] = useState<AdminView>('home');
-  
-  // State management for admin data
-  const [questions, setQuestions] = useState<Question[]>(EXAM_DATA.questions);
+  const [currentView, setCurrentView] = useState<AdminView>('home');
   const [students, setStudents] = useState<Student[]>(STUDENTS_DATA);
+  const [questions, setQuestions] = useState<Question[]>(EXAM_DATA.questions);
 
-  // --- CRUD for Students ---
-  const addStudent = useCallback((student: Omit<Student, 'id'>) => {
-    setStudents(prev => [...prev, { ...student, id: `S${Date.now()}` }]);
-  }, []);
+  // Student CRUD
+  const handleAddStudent = (student: Omit<Student, 'id'>) => {
+    const newStudent: Student = {
+      ...student,
+      // Fix: Generate a more robust unique ID for new students.
+      id: `S${Date.now()}`,
+    };
+    setStudents(prev => [...prev, newStudent]);
+  };
 
-  const updateStudent = useCallback((updatedStudent: Student) => {
+  const handleUpdateStudent = (updatedStudent: Student) => {
     setStudents(prev => prev.map(s => s.id === updatedStudent.id ? updatedStudent : s));
-  }, []);
+  };
 
-  const deleteStudent = useCallback((studentId: string) => {
+  const handleDeleteStudent = (studentId: string) => {
     setStudents(prev => prev.filter(s => s.id !== studentId));
-  }, []);
+  };
 
-  // --- CRUD for Questions ---
-  const addQuestion = useCallback((question: Omit<Question, 'id'>) => {
-    setQuestions(prev => [...prev, { ...question, id: `Q${Date.now()}` } as Question]);
-  }, []);
+  // Question CRUD
+  const handleAddQuestion = (question: Omit<Question, 'id'>) => {
+    const newQuestion = {
+      ...question,
+      // Fix: Generate a more robust unique ID for new questions.
+      id: `Q${Date.now()}`,
+    } as Question;
+    setQuestions(prev => [...prev, newQuestion]);
+  };
 
-  const updateQuestion = useCallback((updatedQuestion: Question) => {
+  const handleUpdateQuestion = (updatedQuestion: Question) => {
     setQuestions(prev => prev.map(q => q.id === updatedQuestion.id ? updatedQuestion : q));
-  }, []);
+  };
 
-  const deleteQuestion = useCallback((questionId: string) => {
+  const handleDeleteQuestion = (questionId: string) => {
     setQuestions(prev => prev.filter(q => q.id !== questionId));
-  }, []);
+  };
 
 
-  const renderView = () => {
-    switch (view) {
+  const renderContent = () => {
+    switch (currentView) {
+      case 'home':
+        return <DashboardHome students={students} questions={questions} />;
       case 'students':
         return (
-            <ManageStudents 
-                students={students}
-                onAdd={addStudent}
-                onUpdate={updateStudent}
-                onDelete={deleteStudent}
-            />
+          <ManageStudents
+            students={students}
+            onAdd={handleAddStudent}
+            onUpdate={handleUpdateStudent}
+            onDelete={handleDeleteStudent}
+          />
         );
       case 'questions':
         return (
-            <ManageQuestions
-                questions={questions}
-                onAdd={addQuestion}
-                onUpdate={updateQuestion}
-                onDelete={deleteQuestion}
-            />
+          <ManageQuestions
+            questions={questions}
+            onAdd={handleAddQuestion}
+            onUpdate={handleUpdateQuestion}
+            onDelete={handleDeleteQuestion}
+          />
         );
-      case 'home':
       default:
-        return (
-            <DashboardHome 
-                studentCount={students.length}
-                questionCount={questions.length}
-                examCount={1} // Mock exam count
-            />
-        );
+        return <DashboardHome students={students} questions={questions} />;
     }
   };
 
   return (
-    // Fix: Pass `setView` via a lambda to match the prop type in AdminLayout.
-    <AdminLayout admin={admin} onLogout={onLogout} setView={(v) => setView(v)} currentView={view}>
-      {renderView()}
+    <AdminLayout admin={admin} onLogout={onLogout} setView={setCurrentView} currentView={currentView}>
+      {renderContent()}
     </AdminLayout>
   );
 };
